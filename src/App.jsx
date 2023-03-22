@@ -1,26 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+import CreateArea from "./CreateArea";
 import { Footer } from "./Footer";
 import { Header}  from "./Header";
-import { Note } from "./note";
-import { notes } from "./notes";
+import Note from "./Note";
 
-
-function Createcard(Thing){
-    return (
-    <Note
-    key={Thing.key}
-    title={Thing.title}
-    content={Thing.content}
-    />
-    );
-}
 function App(){
+    const [notes, setNotes]= useState([]);
+    function addNote(newNote){
+        setNotes(prevNotes =>{
+            return [...prevNotes,newNote];
+        });
+    };
+    function Delete(id){
+        setNotes(prevNotes =>{
+            return prevNotes.filter((noteItem,index) =>{
+                return index !== id;
+            });
+        });
+    };
+
     return (
         <div>
         <Header/>
-        {notes.map(Createcard)}
+        <CreateArea onAdd={addNote}/>
+        {notes.map((noteItem,index) =>{
+            return <Note 
+            
+            id={index}
+            title={noteItem.title} 
+            content={noteItem.content}
+            ondelete={Delete}
+            />
+        })}
         <Footer/>
-
         </div>
         
         );
